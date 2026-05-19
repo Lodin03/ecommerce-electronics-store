@@ -8,6 +8,10 @@ const getCategoryById = async (id) => {
   return await Category.findByPk(id);
 };
 
+const getCategoryByName = async (name) => {
+  return await Category.findOne({ where: { name } });
+};
+
 const createCategory = async (data) => {
   return await Category.create(data); 
 };
@@ -22,6 +26,7 @@ const deleteCategory = async (id) => {
 module.exports = {
   getAllCategories,
   getCategoryById,
+  getCategoryByName,
   createCategory,
   updateCategory,
   deleteCategory

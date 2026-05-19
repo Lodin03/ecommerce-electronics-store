@@ -8,6 +8,10 @@ const getBrandById = async (id) => {
   return await Brand.findByPk(id);  
 }
 
+const getBrandByName = async (name) => {
+  return await Brand.findOne({ where: { name } });
+};
+
 const createBrand = async (data) => {
   return await Brand.create(data);  
 }
@@ -23,6 +27,7 @@ const deleteBrand = async (id) => {
 module.exports = {
   getAllBrands,
   getBrandById,
+  getBrandByName,
   createBrand,
   updateBrand,
   deleteBrand  
