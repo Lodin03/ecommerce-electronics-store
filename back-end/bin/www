@@ -3,10 +3,22 @@
 /**
  * Module dependencies.
  */
+const sequelize = require('../config/database');
+require('../models/index');
 
 var app = require('../app');
 var debug = require('debug')('base-express:server');
 var http = require('http');
+
+async function testConnection() {
+  try {
+    await sequelize.authenticate();
+    console.log('Database connection established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+}
+testConnection()
 
 /**
  * Get port from environment and store in Express.
