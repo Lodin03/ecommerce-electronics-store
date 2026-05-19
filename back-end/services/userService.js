@@ -14,8 +14,12 @@ const getUserById = async (id) => {
 }
 
 const getUserByEmailOrUsername = async (email, username) => {
-  return await User.findOne({where: {[Op.or]: [{email: email}, {username: username}]}})  
-}
+  const conditions = [];
+  if (email) conditions.push({ email });
+  if (username) conditions.push({ username });
+  
+  return await User.findOne({ where: { [Op.or]: conditions } });
+};
 
 const updateUserRole = async (roleId, id) => {
   return await User.update({roleId}, {where: {id}});
