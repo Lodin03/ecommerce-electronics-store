@@ -13,8 +13,8 @@ const createCartItem = async (data) => {
 }
 
 const updateCartItemQuantity = async (id, quantity) => {
-  return await CartItem.update({quantity: quantity + 1}, {where: {id}})
-}
+  return await CartItem.update({ quantity }, { where: { id } });
+};
 
 module.exports = {
   getCartItems,

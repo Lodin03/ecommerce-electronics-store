@@ -3,7 +3,7 @@ function isAdmin(req, res, next) {
     return res.status(403).json({
       status: 'error',
       data: {
-        statuscode: 403,
+        statuscode: 403, // Status 403 means forbidden
         result: 'Access denied. Admins only.'
       }
     });

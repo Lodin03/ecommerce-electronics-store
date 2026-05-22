@@ -3,10 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const isAuth = require('./middleware/authMiddleware');
 
 var indexRouter = require('./routes/index');
 var initRouter = require('./routes/init');
 var authRouter = require('./routes/auth');
+var cartRouter = require('./routes/cart');
 
 var app = express();
 
@@ -22,7 +24,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/init', initRouter);
-app.use('/auth', authRouter)
+app.use('/auth', authRouter);
+app.use('/cart', isAuth, cartRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
