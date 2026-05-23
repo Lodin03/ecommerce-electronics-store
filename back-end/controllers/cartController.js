@@ -165,9 +165,9 @@ const checkout = async (req, res) => {
 
     const orderNumber = generateOrderNumber();
 
+    // status not added as it has default value "In Progress" in Order model
     const order = await createOrder({
       orderNumber,
-      status: 'In Progress',
       discountApplied,
       membershipSnapshot: userMembership ? userMembership.name : 'Bronze',
       userId

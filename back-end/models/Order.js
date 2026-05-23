@@ -13,8 +13,9 @@ const Order = sequelize.define('Order', {
       allowNull: false
     },
     status: {
-      type: DataTypes.STRING, 
-      allowNull: false
+      type: DataTypes.ENUM('In Progress', 'Ordered', 'Completed'),
+      allowNull: false,
+      defaultValue: 'In Progress'
     },
     discountApplied: {
       type: DataTypes.INTEGER, 
