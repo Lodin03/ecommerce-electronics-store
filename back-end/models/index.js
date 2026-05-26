@@ -49,5 +49,5 @@ sequelize.sync({ force: false });
 module.exports = {
   Brand, Cart, CartItem, Category, 
   Membership, Order, OrderItem, 
-  Product, Role, User
+  Product, Role, User, sequelize
 };

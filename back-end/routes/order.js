@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const ordersController = require('../controllers/ordersController');
+const ordersController = require('../controllers/orderController');
 const isAdmin = require('../middleware/adminCheck');
 
 router.get('/', ordersController.getOrders);
