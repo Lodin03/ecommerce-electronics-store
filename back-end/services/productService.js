@@ -1,4 +1,4 @@
-const { Product } = require('../models/index');
+const { Product } = require("../models/index");
 
 const getAllProducts = async () => {
   return await Product.findAll();
@@ -25,5 +25,5 @@ module.exports = {
   getProductById,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
 };

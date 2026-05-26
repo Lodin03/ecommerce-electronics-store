@@ -1,10 +1,22 @@
-const { createCart, getCartByUserId, checkoutCart } = require('../services/cartService');
-const { getCartItems, createCartItem, getCartItemByProductId, updateCartItemQuantity } = require('../services/cartItemService');
-const { createOrder } = require('../services/orderService');
-const { createOrderItem } = require('../services/orderItemService');
-const { getProductById } = require('../services/productService');
-const { getUserById, updateUserMembership } = require('../services/userService');
-const { getAllMemberships } = require('../services/membershipService');
+const {
+  createCart,
+  getCartByUserId,
+  checkoutCart,
+} = require("../services/cartService");
+const {
+  getCartItems,
+  createCartItem,
+  getCartItemByProductId,
+  updateCartItemQuantity,
+} = require("../services/cartItemService");
+const { createOrder } = require("../services/orderService");
+const { createOrderItem } = require("../services/orderItemService");
+const { getProductById } = require("../services/productService");
+const {
+  getUserById,
+  updateUserMembership,
+} = require("../services/userService");
+const { getAllMemberships } = require("../services/membershipService");
 
 const addToCart = async (req, res) => {
   try {
@@ -15,25 +27,25 @@ const addToCart = async (req, res) => {
     const product = await getProductById(productId);
     if (!product) {
       return res.status(404).json({
-        status: 'error',
+        status: "error",
         statuscode: 404,
-        data: { result: 'Product not found' }
+        data: { result: "Product not found" },
       });
     }
 
     if (!quantity || quantity < 1) {
       return res.status(400).json({
-        status: 'error',
+        status: "error",
         statuscode: 400,
-        data: { result: 'Quantity must be at least 1' }
+        data: { result: "Quantity must be at least 1" },
       });
     }
 
     if (product.quantity < quantity) {
       return res.status(400).json({
-        status: 'error',
+        status: "error",
         statuscode: 400,
-        data: { result: 'Not enough stock available' }
+        data: { result: "Not enough stock available" },
       });
     }
 
@@ -46,10 +58,10 @@ const addToCart = async (req, res) => {
     if (existingItem) {
       if (product.quantity < existingItem.quantity + 1) {
         return res.status(400).json({
-          status: 'error',
+          status: "error",
           statuscode: 400,
-          data: { result: 'Not enough stock available' }
-        })
+          data: { result: "Not enough stock available" },
+        });
       }
       // Project requirement: adding the same product to the cart always increases quantity by 1
       await updateCartItemQuantity(existingItem.id, existingItem.quantity + 1);
@@ -58,16 +70,16 @@ const addToCart = async (req, res) => {
     }
 
     res.status(200).json({
-      status: 'success',
+      status: "success",
       statuscode: 200,
-      data: { result: 'Product added to cart' }
+      data: { result: "Product added to cart" },
     });
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
     res.status(500).json({
-      status: 'error',
+      status: "error",
       statuscode: 500,
-      data: { result: 'Failed to add product to cart' }
+      data: { result: "Failed to add product to cart" },
     });
   }
 };
@@ -79,9 +91,9 @@ const getCart = async (req, res) => {
     const cart = await getCartByUserId(userId);
     if (!cart) {
       return res.status(404).json({
-        status: 'error',
+        status: "error",
         statuscode: 404,
-        data: { result: 'No active cart found' }
+        data: { result: "No active cart found" },
       });
     }
 
@@ -96,39 +108,40 @@ const getCart = async (req, res) => {
           name: product.name,
           price: product.unitPrice,
           quantity: item.quantity,
-          subtotal: product.unitPrice * item.quantity
+          subtotal: product.unitPrice * item.quantity,
         };
-      })
+      }),
     );
 
     const total = items.reduce((sum, item) => sum + item.subtotal, 0);
 
     res.status(200).json({
-      status: 'success',
+      status: "success",
       statuscode: 200,
       data: {
         result: {
           cartId: cart.id,
           items,
-          total
-        }
-      }
+          total,
+        },
+      },
     });
   } catch (error) {
-    console.error('Error', error);
+    console.error("Error", error);
     res.status(500).json({
-      status: 'error',
+      status: "error",
       statuscode: 500,
-      data: { result: 'Failed to get active cart' }
+      data: { result: "Failed to get active cart" },
     });
   }
 };
 
 // Generates a unique 8-character order number as required by the task
 const generateOrderNumber = () => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+
   for (let i = 0; i < 8; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
@@ -142,26 +155,28 @@ const checkout = async (req, res) => {
     const cart = await getCartByUserId(userId);
     if (!cart) {
       return res.status(404).json({
-        status: 'error',
+        status: "error",
         statuscode: 404,
-        data: { result: 'No active cart found' }
+        data: { result: "No active cart found" },
       });
     }
 
     const cartItems = await getCartItems(cart.id);
     if (cartItems.length === 0) {
       return res.status(400).json({
-        status: 'error',
+        status: "error",
         statuscode: 400,
-        data: { result: 'Cart is empty' }
+        data: { result: "Cart is empty" },
       });
     }
 
     const user = await getUserById(userId);
     const memberships = await getAllMemberships();
-    const userMembership = memberships.find(m => m.id === user.membershipId);
+    const userMembership = memberships.find((m) => m.id === user.membershipId);
 
-    const discountApplied = userMembership ? userMembership.discountPercentage : 0;
+    const discountApplied = userMembership
+      ? userMembership.discountPercentage
+      : 0;
 
     const orderNumber = generateOrderNumber();
 
@@ -169,8 +184,8 @@ const checkout = async (req, res) => {
     const order = await createOrder({
       orderNumber,
       discountApplied,
-      membershipSnapshot: userMembership ? userMembership.name : 'Bronze',
-      userId
+      membershipSnapshot: userMembership ? userMembership.name : "Bronze",
+      userId,
     });
 
     for (const item of cartItems) {
@@ -179,21 +194,30 @@ const checkout = async (req, res) => {
         orderId: order.id,
         productId: item.productId,
         quantity: item.quantity,
-        unitPrice: product.unitPrice
+        unitPrice: product.unitPrice,
       });
     }
 
     await checkoutCart(userId);
 
-    const allOrders = await require('../services/orderService').getOrdersByUserId(userId);
+    const allOrders =
+      await require("../services/orderService").getOrdersByUserId(userId);
     const allOrderItems = await Promise.all(
-      allOrders.map(o => require('../services/orderItemService').getOrderItemsByOrderId(o.id))
+      allOrders.map((o) =>
+        require("../services/orderItemService").getOrderItemsByOrderId(o.id),
+      ),
     );
-    const totalItemsPurchased = allOrderItems.flat().reduce((sum, item) => sum + item.quantity, 0);
+    const totalItemsPurchased = allOrderItems
+      .flat()
+      .reduce((sum, item) => sum + item.quantity, 0);
 
-    const newMembership = memberships.find(m => {
-      if (m.name === 'Gold') return totalItemsPurchased >= m.minPurchase;
-      if (m.name === 'Silver') return totalItemsPurchased >= m.minPurchase && totalItemsPurchased <= m.maxPurchase;
+    const newMembership = memberships.find((m) => {
+      if (m.name === "Gold") return totalItemsPurchased >= m.minPurchase;
+      if (m.name === "Silver")
+        return (
+          totalItemsPurchased >= m.minPurchase &&
+          totalItemsPurchased <= m.maxPurchase
+        );
       return true;
     });
 
@@ -202,21 +226,21 @@ const checkout = async (req, res) => {
     }
 
     res.status(200).json({
-      status: 'success',
+      status: "success",
       statuscode: 200,
       data: {
-        result: 'Order created successfully',
+        result: "Order created successfully",
         orderNumber,
-        status: 'In Progress',
-        discountApplied
-      }
+        status: "In Progress",
+        discountApplied,
+      },
     });
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
     res.status(500).json({
-      status: 'error',
+      status: "error",
       statuscode: 500,
-      data: { result: 'Failed to checkout cart' }
+      data: { result: "Failed to checkout cart" },
     });
   }
 };

@@ -1,10 +1,10 @@
-const { Role } = require('../models/index');
+const { Role } = require("../models/index");
 
 const getAllRoles = async () => {
-  return await Role.findAll()
-}
+  return await Role.findAll();
+};
 const createRole = async (data) => {
-  return await Role.create(data)  
-}
+  return await Role.create(data);
+};
 
-module.exports = { getAllRoles, createRole }
+module.exports = { getAllRoles, createRole };
