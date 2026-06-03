@@ -35,7 +35,7 @@ app.use('/orders', isAuth, orderRouter);
 app.use('/categories', isAuth, categoryRouter);
 app.use('/brands', isAuth, brandRouter);
 app.use('/products', isAuth, productRouter);
-app.use('/search', searchRouter);
+app.use('/search', isAuth, searchRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

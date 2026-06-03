@@ -136,7 +136,8 @@ const updateProduct = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const productExist = await getProductByIdService(id);
+    const productExist = await getProductByIdService(id, true);
+    
     if (!productExist) {
       return res.status(400).json({
         status: "error",
@@ -145,8 +146,8 @@ const updateProduct = async (req, res) => {
       });
     }
 
-    // Exclude dateAdded and isDeleted from updates
-    const { dateAdded, isDeleted, ...updateData } = req.body;
+    // Exclude dateAdded from updates
+    const { dateAdded, ...updateData } = req.body;
     await updateProductService(id, updateData);
     const updatedProduct = await getProductByIdService(id, true);
 

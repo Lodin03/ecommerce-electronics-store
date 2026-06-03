@@ -3,6 +3,7 @@ const { searchProducts } = require("../services/searchService");
 const searchProduct = async (req, res) => {
   try {
     const { query } = req.body;
+    const isAdmin = req.user.roleId === 1
 
     if (!query || query.trim() === "") {
       return res.status(400).json({
@@ -12,15 +13,7 @@ const searchProduct = async (req, res) => {
       });
     }
 
-    const { count, results } = await searchProducts(query);
-
-    if (count === 0) {
-      return res.status(404).json({
-        status: "error",
-        statuscode: 404,
-        data: { result: "No products found" },
-      });
-    }
+    const { count, results } = await searchProducts(query, isAdmin);
 
     res.status(200).json({
       status: "success",
