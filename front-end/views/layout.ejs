@@ -7,7 +7,7 @@
   <body>
 
     <!-- Main navbar -->
-    <nav class="navbar navbar-dark bg-dark px-3">
+    <nav class="navbar navbar-dark bg-dark px-4">
       <span class="navbar-brand">Admin Panel</span>
       <form action="/logout" method="POST" class="d-inline">
         <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
@@ -16,7 +16,7 @@
 
     <!-- Secondary nav -->
     <nav class="navbar navbar-expand bg-success-subtle px-3 border-bottom border-success">
-      <ul class="navbar-nav gap-1">
+      <ul class="navbar-nav gap-4">
         <li class="nav-item">
           <a href="/products" class="nav-link text-dark fw-semibold">Products</a>
         </li>
@@ -41,6 +41,7 @@
     <!-- Main content -->
     <div class="container-fluid">
       <div class="row">
+        <!-- Bootstrap uses a 12-column grid system. col-12 means this element takes all 12 columns for 100% width of the row. -->
         <main class="col-12 p-4"><%- body %></main>
       </div>
     </div>
