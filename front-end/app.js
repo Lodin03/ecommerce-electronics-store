@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -6,11 +6,15 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const ejsLayouts = require("express-ejs-layouts");
 const session = require("express-session");
-const isAuth = require('./middleware/authMiddleware');
+const isAuth = require("./middleware/authMiddleware");
 
 var authRouter = require("./routes/auth");
-var productRouter = require("./routes/product")
-// var usersRouter = require("./routes/users");
+var productRouter = require("./routes/product");
+var brandRouter = require("./routes/brand");
+var categoryRouter = require("./routes/category");
+var roleRouter = require("./routes/role")
+var usersRouter = require("./routes/user");
+var orderRouter = require("./routes/order");
 
 var app = express();
 
@@ -34,14 +38,18 @@ app.use(
 app.use(ejsLayouts);
 app.set("layout", "layout");
 
-app.use('/', authRouter);  
-app.use('/products', isAuth, productRouter);
+app.use("/", authRouter);
+app.use("/products", isAuth, productRouter);
+app.use("/brands", isAuth, brandRouter);
+app.use("/categories", isAuth, categoryRouter);
+app.use("/roles", isAuth, roleRouter);
+app.use("/users", isAuth, usersRouter);
+app.use("/orders", isAuth, orderRouter);
 
 // Redirects any random unknown routes to login route
-app.use(function(req, res) {
-  res.redirect('/');
+app.use(function (req, res) {
+  res.redirect("/");
 });
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

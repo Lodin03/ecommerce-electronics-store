@@ -1,0 +1,32 @@
+<h4 class="fw-bold mb-4">Orders</h4>
+
+<% if (orders && orders.length > 0) { %>
+  <table class="table table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Order Number</th>
+        <th>Discount</th>
+        <th>Membership</th>
+        <th>User ID</th>
+        <th>Created</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% orders.forEach(function(order) { %>
+        <tr>
+          <td><%= order.id %></td>
+          <td><%= order.orderNumber %></td>
+          <td><%= order.discountApplied %>%</td>
+          <td><%= order.membershipSnapshot %></td>
+          <td><%= order.userId %></td>
+          <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
+          <td><span class="badge bg-secondary"><%= order.status %></span></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+<% } else { %>
+  <div class="alert alert-secondary">No orders found.</div>
+<% } %>

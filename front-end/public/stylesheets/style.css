@@ -1,8 +1,19 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: Arial, sans-serif;
+};
+
+/* Adding Custom Bootstrap-compatible classes for membership UI colors. */
+.membership-gold {
+  background-color: #FFD700;
+  color: #000 !important;
 }
 
-a {
-  color: #00B7FF;
+.membership-silver {
+  background-color: #C0C0C0;
+  color: #000 !important;
+}
+
+.membership-bronze {
+  background-color: #CD7F32;
+  color: #fff !important;
 }

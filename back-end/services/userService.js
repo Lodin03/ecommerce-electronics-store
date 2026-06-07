@@ -1,4 +1,4 @@
-const { User } = require("../models/index");
+const { User, Role, Membership } = require("../models/index");
 const { Op } = require("sequelize");
 
 const createUser = async (data) => {
@@ -6,11 +6,19 @@ const createUser = async (data) => {
 };
 
 const getAllUsers = async () => {
-  return await User.findAll();
+  return await User.findAll({
+    attributes: { exclude: ["password"] },
+    include: [
+      { model: Role, attributes: ["name"] },
+      { model: Membership, attributes: ["name"] }
+    ]
+  });
 };
 
 const getUserById = async (id) => {
-  return await User.findByPk(id);
+  return await User.findByPk(id, {
+    attributes: { exclude: ["password"] }
+  });
 };
 
 const getUserByEmailOrUsername = async (email, username) => {
@@ -19,6 +27,10 @@ const getUserByEmailOrUsername = async (email, username) => {
   if (username) conditions.push({ username });
 
   return await User.findOne({ where: { [Op.or]: conditions } });
+};
+
+const updateUser = async (id, data) => {
+  return await User.update(data, { where: { id } });
 };
 
 const updateUserRole = async (roleId, id) => {
@@ -34,6 +46,7 @@ module.exports = {
   getAllUsers,
   getUserById,
   getUserByEmailOrUsername,
+  updateUser,
   updateUserRole,
   updateUserMembership,
 };

@@ -1,0 +1,28 @@
+<h4 class="fw-bold mb-4">Roles</h4>
+
+<% if (roles && roles.length > 0) { %>
+  <table class="table table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% roles.forEach(function(r) { %>
+        <tr>
+          <td><%= r.id %></td>
+          <td>
+            <% if (r.name === 'Admin') { %>
+              <span class="badge bg-primary">Admin</span>
+            <% } else { %>
+              <span class="badge bg-secondary">User</span>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+<% } else { %>
+  <div class="alert alert-secondary">No roles found.</div>
+<% } %>

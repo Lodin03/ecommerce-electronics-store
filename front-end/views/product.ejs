@@ -3,7 +3,6 @@
 <!-- Product search form: sends GET request to /products with query parameters -->
 <form action="/products" method="GET" id="searchForm">
   <div class="row g-2 align-items-end mb-4">
-
     <!-- Search by name query -->
     <div class="col-3">
       <label class="form-label small fw-semibold">Name</label>
@@ -102,6 +101,10 @@
               data-isdeleted="<%= product.isDeleted %>">
               Edit
             </button>
+            <!-- 
+              HTML forms only support GET and POST, no PUT/DELETE
+              The frontend route then calls axios.delete() to the backend API 
+            -->
             <!-- Sends POST request to delete a product (server performs soft delete by setting isDeleted = 1) -->
             <form action="/products/delete/<%= product.id %>" method="POST" class="d-inline">
               <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -192,6 +195,9 @@
         <h5 class="modal-title">Edit Product</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
+      <!-- 
+        HTML forms only support GET and POST, no PUT/DELETE
+        The frontend route then calls axios.put() to the backend API -->
       <!-- Edit product form: submits updated product data via POST /products/edit/:id -->
       <form id="editForm" method="POST">
         <div class="modal-body">
@@ -250,7 +256,7 @@
           </div>
 
         </div>
-         <!-- Footer of modal: Submit updated data or cancel the request -->
+        <!-- Footer of modal: Submit updated data or cancel the request -->
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
           <button type="submit" class="btn btn-success">Save Changes</button>

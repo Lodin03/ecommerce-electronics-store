@@ -36,7 +36,7 @@ router.get("/", async function (req, res) {
     res.render("product", {
       products,
       categories: categoriesRes.data.data.result,
-      brands: brandsRes.data.data.brands,
+      brands: brandsRes.data.data.result,
       searchQuery: query || "",
     });
   } catch (error) {

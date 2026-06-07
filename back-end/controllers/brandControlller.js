@@ -22,10 +22,7 @@ const getBrands = async (req, res) => {
     res.status(200).json({
       status: "success",
       statuscode: 200,
-      data: {
-        result: "All brands retrieved successfully",
-        brands,
-      },
+      data: { result: brands },
     });
   } catch (error) {
     console.error("Error", error);
