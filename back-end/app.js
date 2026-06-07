@@ -19,6 +19,46 @@ var roleRouter = require("./routes/role");
 
 var app = express();
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "E-Commerce API",
+      version: "1.0.0",
+      description: "API documentation for the E-Commerce backend",
+    },
+    // Tags in alphabetical order
+    tags: [
+      { name: "Authentication" },
+      { name: "Brands" },
+      { name: "Cart" },
+      { name: "Categories" },
+      { name: "Initialization" },
+      { name: "Orders" },
+      { name: "Products" },
+      { name: "Roles" },
+      { name: "Search" },
+      { name: "Users" },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [{ bearerAuth: [] }],
+  },
+  apis: ["./routes/*.js"],
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -29,6 +69,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/", indexRouter);
 app.use("/init", initRouter);
 app.use("/auth", authRouter);

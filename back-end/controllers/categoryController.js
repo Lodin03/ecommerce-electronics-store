@@ -11,9 +11,9 @@ const getCategories = async (req, res) => {
   try {
     const categories = await getAllCategories();
     if (!categories || categories.length === 0) {
-      return res.status(400).json({
+      return res.status(404).json({
         status: "error",
-        statuscode: 400,
+        statuscode: 404,
         data: { result: "No categories found" },
       });
     }
@@ -78,12 +78,20 @@ const updateCategory = async (req, res) => {
     const id = req.params.id;
     const { name } = req.body;
 
-    const categoryExist = await getCategoryById(id);
-    if (!categoryExist) {
+    if (!name || name.trim() === "") {
       return res.status(400).json({
         status: "error",
         statuscode: 400,
-        data: { result: "Category id does not exist" },
+        data: { result: "Category name is required" },
+      });
+    }
+
+    const categoryExist = await getCategoryById(id);
+    if (!categoryExist) {
+      return res.status(404).json({
+        status: "error",
+        statuscode: 404,
+        data: { result: "Category not found" },
       });
     }
 

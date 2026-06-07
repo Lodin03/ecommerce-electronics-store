@@ -11,7 +11,10 @@ const {
 } = require("../services/cartItemService");
 const { createOrder } = require("../services/orderService");
 const { createOrderItem } = require("../services/orderItemService");
-const { getProductById } = require("../services/productService");
+const {
+  getProductById,
+  updateProductQuantity,
+} = require("../services/productService");
 const {
   getUserById,
   updateUserMembership,
@@ -196,6 +199,10 @@ const checkout = async (req, res) => {
         quantity: item.quantity,
         unitPrice: product.unitPrice,
       });
+      await updateProductQuantity(
+        item.productId,
+        product.quantity - item.quantity,
+      );
     }
 
     await checkoutCart(userId);
@@ -211,15 +218,12 @@ const checkout = async (req, res) => {
       .flat()
       .reduce((sum, item) => sum + item.quantity, 0);
 
-    const newMembership = memberships.find((m) => {
-      if (m.name === "Gold") return totalItemsPurchased >= m.minPurchase;
-      if (m.name === "Silver")
-        return (
-          totalItemsPurchased >= m.minPurchase &&
-          totalItemsPurchased <= m.maxPurchase
-        );
-      return true;
-    });
+    const sortedMemberships = [...memberships].sort(
+      (a, b) => b.minPurchase - a.minPurchase,
+    );
+    const newMembership = sortedMemberships.find(
+      (m) => totalItemsPurchased >= m.minPurchase,
+    );
 
     if (newMembership && newMembership.id !== user.membershipId) {
       await updateUserMembership(newMembership.id, userId);

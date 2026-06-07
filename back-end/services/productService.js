@@ -47,6 +47,10 @@ const updateProduct = async (id, data) => {
   return await Product.update(data, { where: { id } });
 };
 
+const updateProductQuantity = async (id, quantity) => {
+  return await Product.update({ quantity }, { where: { id } });
+};
+
 const deleteProduct = async (id) => {
   return await Product.update({ isDeleted: true }, { where: { id } });
 };
@@ -57,5 +61,6 @@ module.exports = {
   getProductByName,
   createProduct,
   updateProduct,
+  updateProductQuantity,
   deleteProduct,
 };
