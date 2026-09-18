@@ -1,8 +1,9 @@
-# Noroff EP1 — E-Commerce Back-End System
+# E-Commerce Back-End System
 
-A full-stack e-commerce back-end system built for Exam Project 1 at Noroff. The project includes a RESTful API, a MySQL database designed in third normal form (3NF), Swagger documentation, Jest/Supertest integration tests, and a separate admin front-end interface.
+A full-stack e-commerce back-end system originally built as an exam project at Noroff. The project includes a RESTful API, a MySQL database designed in third normal form (3NF), Swagger documentation, Jest/Supertest integration tests, and a separate admin front-end interface.
 
 ---
+
 
 ## Table of Contents
 
@@ -31,8 +32,6 @@ A full-stack e-commerce back-end system built for Exam Project 1 at Noroff. The 
 - [Testing](#testing)
 - [References](#references)
 
----
-
 ## Overview
 
 The system converts a static e-commerce site into a fully dynamic back-end platform. Key features include:
@@ -42,14 +41,12 @@ The system converts a static e-commerce site into a fully dynamic back-end platf
 - Admin and User roles with protected routes via middleware
 - Membership tiers (Bronze / Silver / Gold) with automatic discount recalculation on checkout
 - Soft-delete on products, with admins seeing all records and users seeing only active ones
-- Raw SQL queries for product listings and search (as required)
+- Raw SQL queries for product listings and search
 - Price snapshot on order items to preserve pricing at time of purchase
 - Unique 8-character order numbers generated at checkout
 - Separate admin front-end on port 3001 using Express, EJS and Bootstrap
 - Full Swagger UI at `/doc`
 - Jest + Supertest CRUD test suite
-
----
 
 ## Tech Stack
 
@@ -76,8 +73,6 @@ The system converts a static e-commerce site into a fully dynamic back-end platf
 - draw.io (ERD)
 - Swagger
 
----
-
 ## Project Structure
 
 ```
@@ -85,60 +80,55 @@ The system converts a static e-commerce site into a fully dynamic back-end platf
 │   ├── bin/www
 │   ├── config/
 │   │   └── database.js          # Sequelize connection
-│   ├── controllers/             # Route handler logic
-│   ├── middleware/              # Auth, admin checks
-│   ├── models/                  # Sequelize models (one file per table)
-│   │   └── index.js             # Models for all tables and associations in index.js
-│   ├── routes/                  # Express routers
-│   ├── services/                # Database service files (one per table)
-│   ├── tests/                   # Database service files (one per table)
-│   │   └── crud.test.js         # Testing
+│   ├── controllers/              # Route handler logic
+│   ├── middleware/               # Auth, admin checks
+│   ├── models/                   # Sequelize models (one file per table)
+│   │   └── index.js              # Models for all tables and associations
+│   ├── routes/                   # Express routers
+│   ├── services/                 # Database service files (one per table)
+│   ├── tests/
+│   │   └── crud.test.js          # Testing
 │   ├── app.js
-│   ├── package.lock.json
 │   ├── package.json
-│   ├── readme.md
+│   └── readme.md
 │
-├── front-end/                   # Admin front-end (port 3001)
+├── front-end/                    # Admin front-end (port 3001)
 │   ├── bin/www
-│   ├── middleware/              
-│   ├── public/stylesheets            
-│   │   └── style.css            # Custom Bootstrap-compatible classes for membership UI colors.
+│   ├── middleware/
+│   ├── public/stylesheets
+│   │   └── style.css             # Custom Bootstrap-compatible classes for membership UI colors
 │   ├── routes/
-│   ├── views/                   # EJS templates
+│   ├── views/                    # EJS templates
 │   ├── app.js
 │   ├── env_example
-│   ├── package.lock.json
 │   ├── package.json
-│   ├── readme.md
-│
+│   └── readme.md
 ```
-
----
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js
-- MySQL 
+- MySQL
 - npm
 
 ### Installation
 
-1. Clone the repository:
+Clone the repository:
 
 ```bash
-git clone https://github.com/noroff-backend-1/aug25ft-ep-ca-1-Lodin03
+git clone https://github.com/Lodin03/electronics-store-ecommerce.git
 ```
 
-2. Install back-end dependencies:
+Install back-end dependencies:
 
 ```bash
 cd back-end
 npm install
 ```
 
-3. Install front-end dependencies:
+Install front-end dependencies:
 
 ```bash
 cd front-end
@@ -147,9 +137,9 @@ npm install
 
 ### Environment Variables
 
-Create a `.env` file in the `backend/` directory. Use the example below as a template:
+Create a `.env` file in the `back-end/` directory:
 
-```env
+```
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=
@@ -157,12 +147,11 @@ DB_NAME=ecommerce_db
 DB_PORT=3306
 JWT_SECRET=
 PORT=3000
-
 ```
 
-Create a `.env` file in the `frontend/` directory:
+Create a `.env` file in the `front-end/` directory:
 
-```env
+```
 PORT=3001
 BACKEND_URL=http://localhost:3000
 SESSION_SECRET=
@@ -188,124 +177,122 @@ npm start
 
 Once the back-end is running, send a single POST request to seed the database. This only needs to be done once:
 
-```bash
+```
 POST http://localhost:3000/init
 ```
 
 This will:
-- Create and populate all tables from the Noroff API data
-- Seed the `roles` table (Admin = 1, User = 2)
-- Seed the `memberships` table (Bronze / Silver / Gold)
-- Create the default admin user:
-  - **Email:** `admin@noroff.no`
-  - **Password:** `P@ssword2023`
 
----
+- Create and populate all tables from the Noroff API data
+- Seed the roles table (Admin = 1, User = 2)
+- Seed the memberships table (Bronze / Silver / Gold)
+- Create the default admin user:
+  - Email: `admin@noroff.no`
+  - Password: `P@ssword2023`
 
 ## API Endpoints Overview
 
-All endpoints return JSON. Protected routes require a `Bearer` token in the `Authorization` header. Admin-only routes additionally require the requesting user to have `roleId = 1`.
+All endpoints return JSON. Protected routes require a Bearer token in the Authorization header. Admin-only routes additionally require the requesting user to have `roleId = 1`.
 
 ### Auth
 
-| Method | Endpoint          | Access  | Description                  |
-|--------|-------------------|---------|------------------------------|
-| POST   | `/auth/register`  | Public  | Register a new user          |
-| POST   | `/auth/login`     | Public  | Login and receive JWT token  |
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| POST | /auth/register | Public | Register a new user |
+| POST | /auth/login | Public | Login and receive JWT token |
 
 ### Products
 
-| Method | Endpoint          | Access       | Description                                  |
-|--------|-------------------|--------------|----------------------------------------------|
-| GET    | `/products`       | Public       | Get all products (admins see soft-deleted)   |
-| GET    | `/products/:id`   | Public       | Get a single product with brand and category |
-| POST   | `/products`       | Admin only   | Add a new product                            |
-| PUT    | `/products/:id`   | Admin only   | Update a product                             |
-| DELETE | `/products/:id`   | Admin only   | Soft-delete a product                        |
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| GET | /products | Public | Get all products (admins see soft-deleted) |
+| GET | /products/:id | Public | Get a single product with brand and category |
+| POST | /products | Admin only | Add a new product |
+| PUT | /products/:id | Admin only | Update a product |
+| DELETE | /products/:id | Admin only | Soft-delete a product |
 
-> Product listings use raw SQL to return brand and category names alongside product data.
+Product listings use raw SQL to return brand and category names alongside product data.
 
 ### Categories
 
-| Method | Endpoint            | Access     | Description          |
-|--------|---------------------|------------|----------------------|
-| GET    | `/categories`       | Public     | Get all categories   |
-| GET    | `/categories/:id`   | Public     | Get a category by ID |
-| POST   | `/categories`       | Admin only | Add a category       |
-| PUT    | `/categories/:id`   | Admin only | Update a category    |
-| DELETE | `/categories/:id`   | Admin only | Delete a category    |
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| GET | /categories | Public | Get all categories |
+| GET | /categories/:id | Public | Get a category by ID |
+| POST | /categories | Admin only | Add a category |
+| PUT | /categories/:id | Admin only | Update a category |
+| DELETE | /categories/:id | Admin only | Delete a category |
 
 ### Brands
 
-| Method | Endpoint        | Access     | Description       |
-|--------|-----------------|------------|-------------------|
-| GET    | `/brands`       | Public     | Get all brands    |
-| GET    | `/brands/:id`   | Public     | Get a brand by ID |
-| POST   | `/brands`       | Admin only | Add a brand       |
-| PUT    | `/brands/:id`   | Admin only | Update a brand    |
-| DELETE | `/brands/:id`   | Admin only | Delete a brand    |
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| GET | /brands | Public | Get all brands |
+| GET | /brands/:id | Public | Get a brand by ID |
+| POST | /brands | Admin only | Add a brand |
+| PUT | /brands/:id | Admin only | Update a brand |
+| DELETE | /brands/:id | Admin only | Delete a brand |
 
 ### Cart
 
-| Method | Endpoint              | Access          | Description                                    |
-|--------|-----------------------|-----------------|------------------------------------------------|
-| GET    | `/cart`               | Registered user | View the current active cart                   |
-| POST   | `/cart`               | Registered user | Add a product to the cart                      |
-| POST   | `/cart/checkout/now`  | Registered user | Checkout the cart and create an order          |
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| GET | /cart | Registered user | View the current active cart |
+| POST | /cart | Registered user | Add a product to the cart |
+| POST | /cart/checkout/now | Registered user | Checkout the cart and create an order |
 
-> Checkout captures the unit price, applies the current membership discount, creates an order with a unique 8-character order number, and recalculates the user's membership tier.
+Checkout captures the unit price, applies the current membership discount, creates an order with a unique 8-character order number, and recalculates the user's membership tier.
 
 ### Orders
 
-| Method | Endpoint                  | Access          | Description                        |
-|--------|---------------------------|-----------------|------------------------------------|
-| GET    | `/orders`                 | Registered user | View own orders                    |
-| GET    | `/orders/:id`             | Registered user | View a specific order and items    |
-| PUT    | `/orders/:id/status`      | Admin only      | Update order status                |
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| GET | /orders | Registered user | View own orders |
+| GET | /orders/:id | Registered user | View a specific order and items |
+| PUT | /orders/:id/status | Admin only | Update order status |
 
 Order statuses: `In Progress`, `Ordered`, `Completed`
 
 ### Search
 
-| Method | Endpoint    | Access | Description                                                      |
-|--------|-------------|--------|------------------------------------------------------------------|
-| POST   | `/search`   | Public | Search products by partial name, category name, or brand name    |
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| POST | /search | Public | Search products by partial name, category name, or brand name |
 
-> Uses raw SQL queries. Returns matched items and a count of results.
+Uses raw SQL queries. Returns matched items and a count of results.
 
-**Request body example:**
+Request body example:
+
 ```json
 { "query": "laptop" }
 ```
 
 ### Membership
 
-| Method | Endpoint       | Access     | Description                 |
-|--------|----------------|------------|-----------------------------|
-| GET    | `/membership`  | Public     | Get all membership tiers    |
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| GET | /membership | Public | Get all membership tiers |
 
 Membership tiers:
 
-| Tier   | Min items purchased | Max items purchased | Discount |
-|--------|---------------------|---------------------|----------|
-| Bronze | 0                   | 14                  | 0%       |
-| Silver | 15                  | 29                  | 15%      |
-| Gold   | 30+                 | —                   | 30%      |
+| Tier | Min items purchased | Max items purchased | Discount |
+|---|---|---|---|
+| Bronze | 0 | 14 | 0% |
+| Silver | 15 | 29 | 15% |
+| Gold | 30+ | — | 30% |
 
 ### Users
 
-| Method | Endpoint          | Access     | Description            |
-|--------|-------------------|------------|------------------------|
-| GET    | `/users`          | Admin only | Get all users          |
-| PUT    | `/users/:id/role` | Admin only | Update a user's role   |
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| GET | /users | Admin only | Get all users |
+| PUT | /users/:id/role | Admin only | Update a user's role |
 
 ### Roles
 
-| Method | Endpoint   | Access     | Description      |
-|--------|------------|------------|------------------|
-| GET    | `/roles`   | Admin only | Get all roles    |
-
----
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| GET | /roles | Admin only | Get all roles |
 
 ## Swagger Documentation
 
@@ -317,8 +304,6 @@ http://localhost:3000/doc
 
 All endpoints are documented with summaries, request/response schemas, security requirements, and example error responses. Tags are ordered alphabetically for easy navigation.
 
----
-
 ## Admin Front-End
 
 The admin front-end runs separately on port 3001:
@@ -327,26 +312,24 @@ The admin front-end runs separately on port 3001:
 http://localhost:3001
 ```
 
-Only admin users (`roleId = 1`) can log in. Regular users are rejected with an "Access denied" message. The session stores the JWT token, which is forwarded as a `Bearer` token on all requests to the back-end API.
+Only admin users (`roleId = 1`) can log in. Regular users are rejected with an "Access denied" message. The session stores the JWT token, which is forwarded as a Bearer token on all requests to the back-end API.
 
-**Pages available:**
+Pages available:
 
-| Route                        | Description                                          |
-|------------------------------|------------------------------------------------------|
-| `/products`                  | View, search, add, edit, and soft-delete products    |
-| `/categories`                | View, add, edit, and delete categories               |
-| `/brands`                    | View, add, edit, and delete brands                   |
-| `/orders`                    | View all orders and update order status              |
-| `/users`                     | View all users and update user roles                 |
-| `/memberships`               | View membership tiers                                |
+| Route | Description |
+|---|---|
+| /products | View, search, add, edit, and soft-delete products |
+| /categories | View, add, edit, and delete categories |
+| /brands | View, add, edit, and delete brands |
+| /orders | View all orders and update order status |
+| /users | View all users and update user roles |
+| /memberships | View membership tiers |
 
 No Sequelize service files are used in the front-end — all data is fetched exclusively through back-end API endpoints.
 
----
-
 ## Testing
 
-Tests are written with [Jest](https://jestjs.io/) and [Supertest](https://github.com/ladjs/supertest) and cover the following CRUD flow:
+Tests are written with Jest and Supertest and cover the following CRUD flow:
 
 1. Add a category `TEST_CATEGORY`
 2. Add a brand `TEST_BRAND`
@@ -366,16 +349,13 @@ cd back-end
 npm test
 ```
 
-> Make sure the back-end server is not running on port 3000 when running tests, as Supertest starts its own instance of the app.
-
----
+Make sure the back-end server is not running on port 3000 when running tests, as Supertest starts its own instance of the app.
 
 ## References
 
-- [Bootstrap Documentation](https://getbootstrap.com)
-- [Swagger / OpenAPI Documentation](https://swagger.io/docs/)
-- [Sequelize Documentation](https://sequelize.org/docs/v6/)
-- [Express.js Documentation](https://expressjs.com)
-- [JWT Documentation](https://jwt.io)
-- Background image: [Unsplash — Glass Windows Building](https://unsplash.com/photos/a-building-with-glass-windows-3VThnphFT4o)
----
+- [Bootstrap Documentation](https://getbootstrap.com/)
+- [Swagger / OpenAPI Documentation](https://swagger.io/)
+- [Sequelize Documentation](https://sequelize.org/)
+- [Express.js Documentation](https://expressjs.com/)
+- [JWT Documentation](https://jwt.io/)
+- Background image: Unsplash — Glass Windows Building
