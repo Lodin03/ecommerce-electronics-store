@@ -118,7 +118,7 @@ The system converts a static e-commerce site into a fully dynamic back-end platf
 Clone the repository:
 
 ```bash
-git clone https://github.com/Lodin03/electronics-store-ecommerce.git
+git clone https://github.com/Lodin03/ecommerce-electronics-store.git
 ```
 
 Install back-end dependencies:
